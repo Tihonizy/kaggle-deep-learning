@@ -1,0 +1,7 @@
+weights-pro+/
+weights-pro/
+data/
+*.pth
+.ipynb_checkpoints/
+**/weights-pro+/
+**/*.pth
