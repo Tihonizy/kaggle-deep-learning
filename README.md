@@ -10,7 +10,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 
 | Project | Task | Metric | Approach | Result |
 |---|---|---|---|---|
-| [Digit Recognizer](digit-recognizer) | Classify 28x28 handwritten digits into 10 classes | Accuracy | Custom CNNs with BatchNorm, residual and squeeze-and-excitation blocks, 5-fold CV, two-model ensemble with test-time augmentation | 0.9966 mean validation accuracy over 5 folds |
+| [Digit Recognizer](digit-recognizer) | Classify 28x28 handwritten digits into 10 classes | Accuracy | Custom CNNs with BatchNorm, residual and squeeze-and-excitation blocks, 5-fold CV, fold ensemble with test-time augmentation | 0.9966 mean validation accuracy over 5 folds |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Score 12 findings (ligament and meniscus tears, osteoarthritis, effusion and others) for each knee MRI study | Macro ROC AUC over 12 labels | Labels derived from multilingual radiology reports, multi-series DICOM preprocessing, DINOv2 encoder with per-finding attention over slice windows | In progress |
 
 ## Repository layout

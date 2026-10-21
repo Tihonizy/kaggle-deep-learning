@@ -10,7 +10,7 @@
 
 | Проект | Задача | Метрика | Подход | Результат |
 |---|---|---|---|---|
-| [Digit Recognizer](digit-recognizer) | Классификация рукописных цифр 28x28 на 10 классов | Accuracy | Свои CNN с BatchNorm, residual- и squeeze-and-excitation-блоками, 5-fold CV, ансамбль двух моделей с TTA | 0.9966, средняя accuracy на валидации по 5 фолдам |
+| [Digit Recognizer](digit-recognizer) | Классификация рукописных цифр 28x28 на 10 классов | Accuracy | Свои CNN с BatchNorm, residual- и squeeze-and-excitation-блоками, 5-fold CV, ансамбль фолдов с TTA | 0.9966, средняя accuracy на валидации по 5 фолдам |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Оценка 12 находок на МРТ колена (разрывы связок и менисков, артроз, выпот и др.) для каждого исследования | Macro ROC AUC по 12 меткам | Метки из текстов заключений на разных языках, обработка нескольких серий DICOM, энкодер DINOv2 и отдельное внимание по окнам срезов для каждой находки | В работе |
 
 ## Структура
