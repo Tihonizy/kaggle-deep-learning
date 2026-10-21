@@ -4,7 +4,7 @@ PyTorch solutions to Kaggle computer vision competitions. Each competition has i
 folder, and notebooks are numbered in the order they were built, so the progression of
 each approach (what was tried, what failed and why) can be followed from start to finish.
 
-[Русская версия](README.ru.md)
+[Русская версия](README.ru.md) · Kaggle profile: [tihon2010](https://www.kaggle.com/tihon2010)
 
 ## Projects
 
