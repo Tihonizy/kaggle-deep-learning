@@ -26,6 +26,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 │   ├── 01_baseline_dinov2.ipynb
 │   ├── 02_report_labels_mil.ipynb
 │   ├── 03_build_cache_kaggle.ipynb
+│   ├── 04_kaggle_submission.ipynb
 │   └── README.md
 ├── requirements.txt
 └── LICENSE

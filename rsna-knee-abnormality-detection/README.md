@@ -28,7 +28,7 @@ epoch re-read the DICOM files from disk, which made a full run take hours.
 
 ### 02_report_labels_mil.ipynb
 
-Second version, rebuilt around the findings above. The code is commented in Russian.
+Second version, rebuilt around the findings above, training on a Mac through Apple MPS from the prebuilt cache. The code is commented in Russian.
 
 - **Labels.** A rule-based extractor reads each report clause by clause in nine languages and
   produces a graded score (asserted, uncertain, not mentioned, negated) and a confidence that is
@@ -50,26 +50,23 @@ Second version, rebuilt around the findings above. The code is commented in Russ
 
 ### 03_build_cache_kaggle.ipynb
 
-Builds the training cache on a Kaggle CPU session, which does not use the weekly GPU quota, and
-saves it as a dataset: about 15 GB instead of 570 GB of DICOM. It reuses the preprocessing functions
-of notebook 02, and notebook 02 checks that the cache was built with the same settings.
+Builds the training cache on a Kaggle CPU session, which does not use the weekly GPU quota, and saves
+it as a dataset: about 15 GB instead of 570 GB of DICOM. Each study keeps up to six series and four
+windows of three adjacent slices per series, reoriented, cropped to 140 mm and resized to 224 px.
 
-## Where to run
+### 04_kaggle_submission.ipynb
 
-Notebook 02 detects its environment:
+Inference only. Reads the fold weights from attached datasets, takes the preprocessing settings from
+the checkpoints, builds the test cache from DICOM and writes `submission.csv` as a rank average of all models.
 
-| Mode | Input | What happens |
+## Workflow
+
+| Step | Notebook | Where |
 |---|---|---|
-| Kaggle GPU from scratch | competition data | reads DICOM, builds the cache (about 1 hour), trains, writes `submission.csv` |
-| Kaggle GPU with cache | competition data and the cache dataset from notebook 03 | loads the cache in minutes, then trains and predicts |
-| Mac (Apple MPS) or any machine | contents of the cache dataset in `data/` next to the notebook | skips the DICOM cells, trains on the GPU through MPS, saves fold weights to `outputs/weights` |
-
-The submission always runs on Kaggle with `RUN_TRAINING = False`, reading fold weights from a dataset.
-
-```bash
-pip install kaggle
-kaggle datasets download -d <user>/rsna-knee-cache-224 -p rsna-knee-abnormality-detection/data --unzip
-```
+| 1. Build the cache | `03_build_cache_kaggle.ipynb` | Kaggle, CPU |
+| 2. Download it to `data/` | `kaggle datasets download -d <user>/rsna-knee-cache-224 -p data --unzip` | local machine |
+| 3. Train | `02_report_labels_mil.ipynb`, weights go to `outputs/weights` | Mac, Apple MPS |
+| 4. Upload `outputs/weights` as a dataset and submit | `04_kaggle_submission.ipynb` | Kaggle, GPU |
 
 Results will be added after the full Kaggle run.
 
