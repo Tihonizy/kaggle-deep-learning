@@ -48,6 +48,29 @@ Second version, rebuilt around the findings above. The code is commented in Russ
   random left-right knee mirroring. Folds are grouped by a hash of the report text.
 - **Inference.** Mirror test-time augmentation and a rank average over folds.
 
+### 03_build_cache_kaggle.ipynb
+
+Builds the training cache on a Kaggle CPU session, which does not use the weekly GPU quota, and
+saves it as a dataset: about 15 GB instead of 570 GB of DICOM. It reuses the preprocessing functions
+of notebook 02, and notebook 02 checks that the cache was built with the same settings.
+
+## Where to run
+
+Notebook 02 detects its environment:
+
+| Mode | Input | What happens |
+|---|---|---|
+| Kaggle GPU from scratch | competition data | reads DICOM, builds the cache (about 1 hour), trains, writes `submission.csv` |
+| Kaggle GPU with cache | competition data and the cache dataset from notebook 03 | loads the cache in minutes, then trains and predicts |
+| Mac (Apple MPS) or any machine | contents of the cache dataset in `data/` next to the notebook | skips the DICOM cells, trains on the GPU through MPS, saves fold weights to `outputs/weights` |
+
+The submission always runs on Kaggle with `RUN_TRAINING = False`, reading fold weights from a dataset.
+
+```bash
+pip install kaggle
+kaggle datasets download -d <user>/rsna-knee-cache-224 -p rsna-knee-abnormality-detection/data --unzip
+```
+
 Results will be added after the full Kaggle run.
 
 ## Credits

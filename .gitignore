@@ -1,6 +1,7 @@
 # Competition data and model weights
 data/
 weights/
+outputs/
 *.pth
 *.pt
 *.ckpt
