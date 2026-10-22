@@ -50,11 +50,12 @@ Second version, rebuilt around the findings above, training on a Mac through App
 
 ### 03_build_cache_kaggle.ipynb
 
-Builds the training cache on a Kaggle CPU session, which does not use the weekly GPU quota, and saves
-it as a dataset: about 15 GB instead of 570 GB of DICOM. Each study keeps up to six series and four
-windows of three adjacent slices per series, reoriented, cropped to 140 mm and resized to 224 px.
-Notebook 02 needs only `cache_train.npy` from it: study order, filled slots and window positions are
-recomputed from the array and `train.csv`.
+Builds a raw per-study cache on a Kaggle CPU session, which does not use the weekly GPU quota. For each
+study it keeps one series per plane and fat suppression combination, all its slices (up to 32) in
+anatomical order, reoriented, cropped to 140 mm, resized to 224 px and scaled to uint8, and saves them as
+`studies/<StudyInstanceUID>.npz`. Window selection, slot filling, normalization and augmentation are left
+to the `Dataset` class of the training notebooks. The output limit of 20 GB per run is met by building the
+cache in two parts of about 11 GB each.
 
 ### 04_kaggle_submission.ipynb
 
