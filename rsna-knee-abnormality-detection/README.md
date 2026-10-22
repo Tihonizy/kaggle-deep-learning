@@ -53,6 +53,8 @@ Second version, rebuilt around the findings above, training on a Mac through App
 Builds the training cache on a Kaggle CPU session, which does not use the weekly GPU quota, and saves
 it as a dataset: about 15 GB instead of 570 GB of DICOM. Each study keeps up to six series and four
 windows of three adjacent slices per series, reoriented, cropped to 140 mm and resized to 224 px.
+Notebook 02 needs only `cache_train.npy` from it: study order, filled slots and window positions are
+recomputed from the array and `train.csv`.
 
 ### 04_kaggle_submission.ipynb
 
@@ -64,7 +66,7 @@ the checkpoints, builds the test cache from DICOM and writes `submission.csv` as
 | Step | Notebook | Where |
 |---|---|---|
 | 1. Build the cache | `03_build_cache_kaggle.ipynb` | Kaggle, CPU |
-| 2. Download it to `data/` | `kaggle datasets download -d <user>/rsna-knee-cache-224 -p data --unzip` | local machine |
+| 2. Put `cache_train.npy` from the cache dataset and the competition `train.csv` into `data/` | browser or Kaggle CLI | local machine |
 | 3. Train | `02_report_labels_mil.ipynb`, weights go to `outputs/weights` | Mac, Apple MPS |
 | 4. Upload `outputs/weights` as a dataset and submit | `04_kaggle_submission.ipynb` | Kaggle, GPU |
 
