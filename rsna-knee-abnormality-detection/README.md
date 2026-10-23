@@ -57,6 +57,12 @@ anatomical order, reoriented, cropped to 140 mm, resized to 224 px and scaled to
 to the `Dataset` class of the training notebooks. The output limit of 20 GB per run is met by building the
 cache in two parts of about 11 GB each.
 
+### 05_pack_cache_kaggle.ipynb
+
+Packs one part of the cache into a single uncompressed tar file, `rsna_raw_partK.tar`, because Kaggle does
+not always build a download archive for a dataset with thousands of small files. It checks that every
+study listed in the index is present before packing.
+
 ### 04_kaggle_submission.ipynb
 
 Inference only. Reads the fold weights from attached datasets, takes the preprocessing settings from

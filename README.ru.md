@@ -27,6 +27,7 @@
 │   ├── 02_report_labels_mil.ipynb
 │   ├── 03_build_cache_kaggle.ipynb
 │   ├── 04_kaggle_submission.ipynb
+│   ├── 05_pack_cache_kaggle.ipynb
 │   └── README.md
 ├── requirements.txt
 └── LICENSE
