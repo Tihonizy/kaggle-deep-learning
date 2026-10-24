@@ -59,7 +59,7 @@ cache in two parts of about 11 GB each.
 
 ### 05_pack_cache_kaggle.ipynb
 
-Packs one part of the cache into a single uncompressed tar file, `rsna_raw_partK.tar`, because Kaggle does
+Packs one part of the cache into a single uncompressed tar file saved as `rsna_raw_partK.pack` (Kaggle unpacks `.tar` and `.zip` when creating a dataset), because Kaggle does
 not always build a download archive for a dataset with thousands of small files. It checks that every
 study listed in the index is present before packing.
 
