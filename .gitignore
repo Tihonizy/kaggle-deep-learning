@@ -21,3 +21,6 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# Written by %%writefile in the notebooks
+knee_dataset.py

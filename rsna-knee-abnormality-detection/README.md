@@ -18,7 +18,8 @@ contusion and fracture. The metric is the unweighted mean of the 12 per-label RO
 ### 01_baseline_dinov2.ipynb
 
 First attempt: three slices from the middle of the study as a pseudo-RGB image, DINOv2 ViT-B from
-timm with the last two blocks unfrozen, BCE loss, 5-fold GroupKFold.
+timm with the last two blocks unfrozen, BCE loss, 5-fold GroupKFold. It now reads the same raw cache as
+the second version: the sagittal series of each study and three slices around the centre of the stack.
 
 Validation macro AUC stayed at 0.5 to 0.56. The cause was in the labels, not the model:
 missing labels were replaced with zeros, which turned 4,349 of 4,407 studies into negatives for
@@ -28,7 +29,8 @@ epoch re-read the DICOM files from disk, which made a full run take hours.
 
 ### 02_report_labels_mil.ipynb
 
-Second version, rebuilt around the findings above, training on a Mac through Apple MPS from the prebuilt cache. The code is commented in Russian.
+Second version, rebuilt around the findings above, training on a Mac through Apple MPS from the raw cache
+built by `03_build_cache_kaggle.ipynb`. The code is commented in Russian.
 
 - **Labels.** A rule-based extractor reads each report clause by clause in nine languages and
   produces a graded score (asserted, uncertain, not mentioned, negated) and a confidence that is
@@ -37,15 +39,18 @@ Second version, rebuilt around the findings above, training on a Mac through App
 - **Series selection.** Six slots per study (three planes, with and without fat suppression). A
   missing slot is filled with the other series of the same plane.
 - **Preprocessing.** Slices are ordered by position along the slice normal, reoriented to a common
-  orientation from `ImageOrientationPatient`, normalised by the 1st and 99th percentile of the series,
-  cropped to 140 mm using `PixelSpacing` and resized to 224 px. Four windows of three adjacent slices
-  are taken from each series between 8% and 92% of the stack.
-- **Cache.** Every selected slice is decoded once into a uint8 array in memory, so training epochs do not touch the disk.
+  orientation from `ImageOrientationPatient`, normalised by the 0.5 and 99.5 percentiles of the series,
+  cropped to 140 mm using `PixelSpacing` and resized to 224 px. This part runs once, in the cache builder.
+- **Dataset.** A standard PyTorch `Dataset` loads one study file and does everything else on the fly:
+  fills missing slots, mirrors the knee, picks windows of three adjacent slices between 8% and 92% of the
+  stack (two random windows per series in training, four fixed ones in evaluation), applies augmentation
+  and ImageNet normalisation. A `DataLoader` with worker processes prepares the next batch while the GPU
+  computes the current one.
 - **Model.** DINOv2 ViT-S encodes each window. Window embeddings get slot and position embeddings,
   pass through one transformer layer, and each of the 12 findings pools them with its own attention.
 - **Training.** Weighted BCE plus a pairwise ranking loss, separate learning rates for the encoder
-  and the head, OneCycle schedule, EMA of weights, mixed precision, affine and intensity augmentation,
-  random left-right knee mirroring. Folds are grouped by a hash of the report text.
+  and the head, OneCycle schedule, EMA of weights, mixed precision. Folds are grouped by a hash of the
+  report text.
 - **Inference.** Mirror test-time augmentation and a rank average over folds.
 
 ### 03_build_cache_kaggle.ipynb
@@ -66,16 +71,18 @@ study listed in the index is present before packing.
 ### 04_kaggle_submission.ipynb
 
 Inference only. Reads the fold weights from attached datasets, takes the preprocessing settings from
-the checkpoints, builds the test cache from DICOM and writes `submission.csv` as a rank average of all models.
+the checkpoints, converts the test DICOM files with the same functions as the cache builder, feeds them
+through the same `Dataset` class and writes `submission.csv` as a rank average of all models.
 
 ## Workflow
 
 | Step | Notebook | Where |
 |---|---|---|
 | 1. Build the cache | `03_build_cache_kaggle.ipynb` | Kaggle, CPU |
-| 2. Put `cache_train.npy` from the cache dataset and the competition `train.csv` into `data/` | browser or Kaggle CLI | local machine |
-| 3. Train | `02_report_labels_mil.ipynb`, weights go to `outputs/weights` | Mac, Apple MPS |
-| 4. Upload `outputs/weights` as a dataset and submit | `04_kaggle_submission.ipynb` | Kaggle, GPU |
+| 2. Pack each part of the cache into one file | `05_pack_cache_kaggle.ipynb` | Kaggle, CPU |
+| 3. Download both `.pack` files and unpack them into `data/raw/` (`tar -xf rsna_raw_part0.pack -C data/raw`) | browser | local machine |
+| 4. Train | `02_report_labels_mil.ipynb`, weights go to `outputs/weights` | Mac, Apple MPS |
+| 5. Upload `outputs/weights` as a dataset and submit | `04_kaggle_submission.ipynb` | Kaggle, GPU |
 
 Results will be added after the full Kaggle run.
 
