@@ -7,5 +7,6 @@ pandas
 scikit-learn
 matplotlib
 tqdm
+tfrecord
 pydicom>=2.4
 opencv-python
