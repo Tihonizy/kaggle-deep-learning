@@ -11,7 +11,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 | Project | Task | Metric | Approach | Result |
 |---|---|---|---|---|
 | [Digit Recognizer](digit-recognizer) | Classify 28x28 handwritten digits into 10 classes | Accuracy | Custom CNNs with BatchNorm, residual and squeeze-and-excitation blocks, 5-fold CV, fold ensemble with test-time augmentation | 0.9966 mean validation accuracy over 5 folds |
-| [Petals to the Metal](petals-to-the-metal) | Classify 224x224 flower photos into 104 classes | Macro F1 | Custom CNN trained from scratch with augmentation and cosine schedule, best epoch by validation F1; a copy of the notebook adapted to a Kaggle TPU (PyTorch/XLA) for the submission | 0.644 validation macro F1 (baseline) |
+| [Petals to the Metal](petals-to-the-metal) | Classify 224x224 flower photos into 104 classes | Macro F1 | Custom CNN trained from scratch with augmentation and cosine schedule, best epoch by validation F1; copies of the notebook adapted to a Kaggle GPU and a Kaggle TPU (PyTorch/XLA) for the submission | 0.644 validation macro F1 (baseline) |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Score 12 findings (ligament and meniscus tears, osteoarthritis, effusion and others) for each knee MRI study | Macro ROC AUC over 12 labels | Labels derived from multilingual radiology reports, multi-series DICOM preprocessing, DINOv2 encoder with per-finding attention over slice windows | In progress |
 
 ## Repository layout
@@ -25,6 +25,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 │   └── README.md
 ├── petals-to-the-metal/
 │   ├── 01_baseline_cnn.ipynb
+│   ├── 01_baseline_cnn_kaggle_gpu.ipynb
 │   ├── 01_baseline_cnn_kaggle_tpu.ipynb
 │   └── README.md
 ├── rsna-knee-abnormality-detection/
@@ -58,8 +59,8 @@ Digit Recognizer runs locally. Download the data with the Kaggle CLI into the pr
 kaggle competitions download -c digit-recognizer -p digit-recognizer/data
 ```
 
-Petals to the Metal runs locally as well. Its submissions are made from a Kaggle notebook with a TPU, which is what
-the `_kaggle_tpu` notebook is for:
+Petals to the Metal runs locally as well. Its submissions are made from a Kaggle notebook with the `_kaggle_gpu` notebook
+(the `_kaggle_tpu` one does the same on a TPU, but TPU sessions often wait in a long queue):
 
 ```bash
 kaggle competitions download -c tpu-getting-started -p petals-to-the-metal/data
