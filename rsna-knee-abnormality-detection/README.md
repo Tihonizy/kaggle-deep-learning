@@ -86,8 +86,8 @@ through the same `Dataset` class and writes `submission.csv` as a rank average o
 
 ## Result
 
-The project is finished. The final submission made with `04_kaggle_submission.ipynb` scored 0.69126 macro
-ROC AUC on the public leaderboard.
+The project is finished. The final submission made with `04_kaggle_submission.ipynb` scored 0.69103 macro
+ROC AUC on the private leaderboard.
 
 ## Credits
 
