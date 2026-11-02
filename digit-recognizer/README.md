@@ -24,3 +24,6 @@ kaggle competitions download -c digit-recognizer -p data
 
 The notebooks unzip `data/digit-recognizer.zip` into `data/digit_recognizer/`, save fold weights
 to `weights/` and write `submission.csv` next to the notebook. None of these are tracked by git.
+
+On Kaggle: set `ON_KAGGLE = True` in the first cell and add the competition data. The notebook then reads it from
+`/kaggle/input` and writes the weights and `submission.csv` to `/kaggle/working`.
