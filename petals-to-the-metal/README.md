@@ -8,19 +8,14 @@ macro F1.
 
 ## Notebooks
 
-| Notebook | What it adds | Validation |
-|---|---|---|
-| `01_baseline_cnn.ipynb` | TFRecords converted to `.jpg` files and a `.csv` with labels, lazy `Dataset`, light augmentation (random resized crop, flip, rotation, color jitter), custom CNN from scratch (four conv blocks with BatchNorm and SiLU, global average pooling, 0.86M parameters), AdamW with cosine schedule, 50 epochs, best epoch by validation macro F1 | 0.644 macro F1, 0.697 accuracy |
-| `01_baseline_cnn_large.ipynb` | The same pipeline with a larger CNN: five conv blocks instead of four, channels 32-64-128-256-512 instead of 32-64-128-192, dropout 0.2 before the linear layer, 4.8M parameters instead of 0.86M. The model class takes `widths`, `convs_per_block` and `dropout`, so its size changes without editing the class | not run yet |
+| Notebook | What it adds |
+|---|---|
+| `01_baseline_cnn.ipynb` | TFRecords converted to `.jpg` files and a `.csv` with labels, lazy `Dataset`, light augmentation (random resized crop, flip, rotation, color jitter), custom CNN from scratch (four conv blocks with BatchNorm and SiLU, global average pooling, 0.86M parameters), AdamW with cosine schedule, 50 epochs, best epoch by validation macro F1 |
+| `01_baseline_cnn_large.ipynb` | The same pipeline with a larger CNN: five conv blocks instead of four, channels 32-64-128-256-512 instead of 32-64-128-192, dropout 0.2 before the linear layer, 4.8M parameters instead of 0.86M. The model class takes `widths`, `convs_per_block` and `dropout`, so its size changes without editing the class |
 
-Balanced class weights in the loss were also tried with the baseline and lowered validation macro F1 from 0.64 to
-0.42, so the final run uses an unweighted loss.
+## Result
 
-On Kaggle the baseline scored 0.649 macro F1 on the public leaderboard. A run with most of the augmentation removed
-scored 0.668 (validation macro F1 0.687 instead of 0.648): the small model underfits even the augmented training set
-(train macro F1 0.74), so heavier augmentation only makes it worse. The larger model is the next step to check this.
-
-Validation scores are reported for the best epoch, so they are slightly optimistic.
+0.668 macro F1 on the Kaggle public leaderboard.
 
 ## Running
 

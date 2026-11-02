@@ -6,14 +6,15 @@ The training set has 42,000 labelled images and the test set 28,000. The metric 
 
 ## Notebooks
 
-| Notebook | What it adds | Validation |
-|---|---|---|
-| `01_baseline_cnn.ipynb` | Two convolutional blocks with max pooling, Adam, 5 epochs on the full training set | none, train accuracy 0.986 |
-| `02_modern_cnn_cv.ipynb` | Deeper CNN (three blocks with BatchNorm, SiLU and dropout, global average pooling), rotation and affine augmentation, AdamW with cosine schedule, label smoothing, 5-fold stratified CV, test prediction averaged over folds | 0.9966 mean best-epoch accuracy over 5 folds |
-| `03_cnn_ensemble_tta.ipynb` | Residual blocks with squeeze-and-excitation and GeM pooling, elastic augmentation, ensemble of two 5-fold runs, 5-view test-time augmentation (original, two rotations, zoom in, zoom out). Pretrained timm ConvNeXt and EfficientNet were also tried | 0.9962 and 0.9961 mean best-epoch accuracy per run |
+| Notebook | What it adds |
+|---|---|
+| `01_baseline_cnn.ipynb` | Two convolutional blocks with max pooling, Adam, 5 epochs on the full training set |
+| `02_modern_cnn_cv.ipynb` | Deeper CNN (three blocks with BatchNorm, SiLU and dropout, global average pooling), rotation and affine augmentation, AdamW with cosine schedule, label smoothing, 5-fold stratified CV, test prediction averaged over folds |
+| `03_cnn_ensemble_tta.ipynb` | Residual blocks with squeeze-and-excitation and GeM pooling, elastic augmentation, ensemble of two 5-fold runs, 5-view test-time augmentation (original, two rotations, zoom in, zoom out). Pretrained timm ConvNeXt and EfficientNet were also tried |
 
-Validation accuracy is reported for the best epoch of each fold, so it is slightly optimistic.
-The best submission scored 0.99692 accuracy on the Kaggle public leaderboard.
+## Result
+
+0.99692 accuracy on the Kaggle public leaderboard.
 
 ## Running
 
