@@ -11,7 +11,7 @@
 | Проект | Задача | Метрика | Подход | Результат |
 |---|---|---|---|---|
 | [Digit Recognizer](digit-recognizer) | Классификация рукописных цифр 28x28 на 10 классов | Accuracy | Свои CNN с BatchNorm, residual- и squeeze-and-excitation-блоками, 5-fold CV, ансамбль фолдов с TTA | 0.9966, средняя accuracy на валидации по 5 фолдам |
-| [Petals to the Metal](petals-to-the-metal) | Классификация фотографий цветов 224x224 на 104 класса | Macro F1 | Своя CNN с нуля с аугментациями и косинусным lr, лучшая эпоха по F1 на валидации; копии ноутбука под GPU и TPU в Kaggle (PyTorch/XLA) для сабмита | 0.644, macro F1 на валидации (бейзлайн) |
+| [Petals to the Metal](petals-to-the-metal) | Классификация фотографий цветов 224x224 на 104 класса | Macro F1 | Свои CNN с нуля (0.86M и 4.8M параметров) с аугментациями и косинусным lr, лучшая эпоха по F1 на валидации; копии ноутбука под GPU и TPU в Kaggle (PyTorch/XLA) для сабмита | 0.668, macro F1 на публичном лидерборде (бейзлайн) |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Оценка 12 находок на МРТ колена (разрывы связок и менисков, артроз, выпот и др.) для каждого исследования | Macro ROC AUC по 12 меткам | Метки из текстов заключений на разных языках, обработка нескольких серий DICOM, энкодер DINOv2 и отдельное внимание по окнам срезов для каждой находки | В работе |
 
 ## Структура
@@ -27,6 +27,9 @@
 │   ├── 01_baseline_cnn.ipynb
 │   ├── 01_baseline_cnn_kaggle_gpu.ipynb
 │   ├── 01_baseline_cnn_kaggle_tpu.ipynb
+│   ├── 01_baseline_cnn_large.ipynb
+│   ├── 01_baseline_cnn_large_kaggle_gpu.ipynb
+│   ├── 01_baseline_cnn_large_kaggle_tpu.ipynb
 │   └── README.md
 ├── rsna-knee-abnormality-detection/
 │   ├── 01_baseline_dinov2.ipynb
