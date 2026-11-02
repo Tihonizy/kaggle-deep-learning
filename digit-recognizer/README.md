@@ -13,6 +13,7 @@ The training set has 42,000 labelled images and the test set 28,000. The metric 
 | `03_cnn_ensemble_tta.ipynb` | Residual blocks with squeeze-and-excitation and GeM pooling, elastic augmentation, ensemble of two 5-fold runs, 5-view test-time augmentation (original, two rotations, zoom in, zoom out). Pretrained timm ConvNeXt and EfficientNet were also tried | 0.9962 and 0.9961 mean best-epoch accuracy per run |
 
 Validation accuracy is reported for the best epoch of each fold, so it is slightly optimistic.
+The best submission scored 0.99692 accuracy on the Kaggle public leaderboard.
 
 ## Running
 
