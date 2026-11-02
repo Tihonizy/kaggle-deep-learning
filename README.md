@@ -11,7 +11,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 | Project | Task | Metric | Approach | Result |
 |---|---|---|---|---|
 | [Digit Recognizer](digit-recognizer) | Classify 28x28 handwritten digits into 10 classes | Accuracy | Custom CNNs with BatchNorm, residual and squeeze-and-excitation blocks, 5-fold CV, fold ensemble with test-time augmentation | 0.99692 public leaderboard accuracy |
-| [Petals to the Metal](petals-to-the-metal) | Classify 224x224 flower photos into 104 classes | Macro F1 | Custom CNNs trained from scratch (0.86M and 4.8M parameters) with augmentation and cosine schedule, best epoch by validation F1; copies of the notebook adapted to a Kaggle GPU and a Kaggle TPU (PyTorch/XLA) for the submission | 0.668 public leaderboard macro F1 |
+| [Petals to the Metal](petals-to-the-metal) | Classify 224x224 flower photos into 104 classes | Macro F1 | Custom CNNs trained from scratch (0.86M and 4.8M parameters) with augmentation and cosine schedule, best epoch by validation F1; the same notebook runs locally and on a Kaggle GPU for the submission | 0.668 public leaderboard macro F1 |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Score 12 findings (ligament and meniscus tears, osteoarthritis, effusion and others) for each knee MRI study | Macro ROC AUC over 12 labels | Labels derived from multilingual radiology reports, multi-series DICOM preprocessing, DINOv2 encoder with per-finding attention over slice windows | 0.69103 private leaderboard macro ROC AUC |
 
 ## Repository layout
@@ -25,11 +25,7 @@ each approach (what was tried, what failed and why) can be followed from start t
 │   └── README.md
 ├── petals-to-the-metal/
 │   ├── 01_baseline_cnn.ipynb
-│   ├── 01_baseline_cnn_kaggle_gpu.ipynb
-│   ├── 01_baseline_cnn_kaggle_tpu.ipynb
 │   ├── 01_baseline_cnn_large.ipynb
-│   ├── 01_baseline_cnn_large_kaggle_gpu.ipynb
-│   ├── 01_baseline_cnn_large_kaggle_tpu.ipynb
 │   └── README.md
 ├── rsna-knee-abnormality-detection/
 │   ├── 01_baseline_dinov2.ipynb
@@ -46,8 +42,11 @@ Conventions:
 
 - One folder per competition, named after the Kaggle competition slug, or after the competition title when the
   slug is generic (Petals to the Metal is `tpu-getting-started`).
-- Notebooks are named `NN_short_description.ipynb`, where `NN` is the order in which they were written. A copy of a
-  notebook adapted to run on Kaggle keeps its number and gets a suffix, for example `01_baseline_cnn_kaggle_tpu.ipynb`.
+- Notebooks are named `NN_short_description.ipynb`, where `NN` is the order in which they were written. Notebooks
+  that only make sense on Kaggle get a `_kaggle` suffix, for example `03_build_cache_kaggle.ipynb`.
+- A notebook that runs both locally and on Kaggle starts with an Environment cell with one flag, `ON_KAGGLE = False`.
+  Set it to `True` before running the notebook on Kaggle: `DATA_DIR`, `OUT_DIR` and the number of DataLoader workers
+  follow it, and the device (CUDA, MPS or CPU) is picked automatically. There are no separate Kaggle copies.
 - Competition data goes to `<project>/data/` and model weights to `<project>/weights/`. Both are excluded from git.
 
 ## Running the notebooks
@@ -62,8 +61,8 @@ Digit Recognizer runs locally. Download the data with the Kaggle CLI into the pr
 kaggle competitions download -c digit-recognizer -p digit-recognizer/data
 ```
 
-Petals to the Metal runs locally as well. Its submissions are made from a Kaggle notebook with the `_kaggle_gpu` notebook
-(the `_kaggle_tpu` one does the same on a TPU, but TPU sessions often wait in a long queue):
+Petals to the Metal runs locally as well. For the submission the same notebook is uploaded to Kaggle with
+`ON_KAGGLE = True` and runs on a GPU:
 
 ```bash
 kaggle competitions download -c tpu-getting-started -p petals-to-the-metal/data
