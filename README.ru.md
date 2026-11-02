@@ -11,7 +11,7 @@
 | Проект | Задача | Метрика | Подход | Результат |
 |---|---|---|---|---|
 | [Digit Recognizer](digit-recognizer) | Классификация рукописных цифр 28x28 на 10 классов | Accuracy | Свои CNN с BatchNorm, residual- и squeeze-and-excitation-блоками, 5-fold CV, ансамбль фолдов с TTA | 0.99692, accuracy на публичном лидерборде |
-| [Petals to the Metal](petals-to-the-metal) | Классификация фотографий цветов 224x224 на 104 класса | Macro F1 | Свои CNN с нуля (0.86M и 4.8M параметров) с аугментациями и косинусным lr, лучшая эпоха по F1 на валидации; один и тот же ноутбук работает локально и в Kaggle на GPU и TPU (PyTorch/XLA) для сабмита | 0.668, macro F1 на публичном лидерборде |
+| [Petals to the Metal](petals-to-the-metal) | Классификация фотографий цветов 224x224 на 104 класса | Macro F1 | Свои CNN с нуля (0.86M и 4.8M параметров) с аугментациями и косинусным lr, лучшая эпоха по F1 на валидации; копии ноутбука под GPU и TPU в Kaggle (PyTorch/XLA) для сабмита | 0.668, macro F1 на публичном лидерборде |
 | [RSNA Knee Abnormality Detection](rsna-knee-abnormality-detection) | Оценка 12 находок на МРТ колена (разрывы связок и менисков, артроз, выпот и др.) для каждого исследования | Macro ROC AUC по 12 меткам | Метки из текстов заключений на разных языках, обработка нескольких серий DICOM, энкодер DINOv2 и отдельное внимание по окнам срезов для каждой находки | 0.69103, macro ROC AUC на приватном лидерборде |
 
 ## Структура
@@ -25,7 +25,11 @@
 │   └── README.md
 ├── petals-to-the-metal/
 │   ├── 01_baseline_cnn.ipynb
+│   ├── 01_baseline_cnn_kaggle_gpu.ipynb
+│   ├── 01_baseline_cnn_kaggle_tpu.ipynb
 │   ├── 01_baseline_cnn_large.ipynb
+│   ├── 01_baseline_cnn_large_kaggle_gpu.ipynb
+│   ├── 01_baseline_cnn_large_kaggle_tpu.ipynb
 │   └── README.md
 ├── rsna-knee-abnormality-detection/
 │   ├── 01_baseline_dinov2.ipynb
@@ -42,9 +46,8 @@
 
 - Одна папка на соревнование, имя совпадает с адресом соревнования на Kaggle, а если адрес ничего не говорит,
   то с названием соревнования (у Petals to the Metal адрес `tpu-getting-started`).
-- Ноутбуки называются `NN_short_description.ipynb`, где `NN` это порядковый номер. Ноутбук, который нужно запускать
-  в Kaggle, сам определяет, где он работает, и меняет пути и устройство, поэтому отдельных копий для Kaggle нет.
-  Ноутбуки, которые имеют смысл только в Kaggle, получают суффикс `_kaggle`, например `03_build_cache_kaggle.ipynb`.
+- Ноутбуки называются `NN_short_description.ipynb`, где `NN` это порядковый номер. Копия ноутбука для запуска
+  в Kaggle сохраняет номер и получает суффикс, например `01_baseline_cnn_kaggle_tpu.ipynb`.
 - Данные лежат в `<проект>/data/`, веса моделей в `<проект>/weights/`. Обе папки не попадают в git.
 
 ## Запуск
@@ -59,8 +62,8 @@ Digit Recognizer запускается локально. Данные скач�
 kaggle competitions download -c digit-recognizer -p digit-recognizer/data
 ```
 
-Petals to the Metal тоже запускается локально. Для сабмита те же ноутбуки загружаются в Kaggle и работают там
-на GPU или TPU:
+Petals to the Metal тоже запускается локально. Сабмит делается в Kaggle ноутбуком `_kaggle_gpu`
+(`_kaggle_tpu` делает то же на TPU, но TPU-сессии часто ждут в длинной очереди):
 
 ```bash
 kaggle competitions download -c tpu-getting-started -p petals-to-the-metal/data
