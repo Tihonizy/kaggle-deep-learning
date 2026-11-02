@@ -13,9 +13,16 @@ macro F1.
 | `01_baseline_cnn.ipynb` | TFRecords converted to `.jpg` files and a `.csv` with labels, lazy `Dataset`, light augmentation (random resized crop, flip, rotation, color jitter), custom CNN from scratch (four conv blocks with BatchNorm and SiLU, global average pooling, 0.86M parameters), AdamW with cosine schedule, 50 epochs, best epoch by validation macro F1 | 0.644 macro F1, 0.697 accuracy |
 | `01_baseline_cnn_kaggle_gpu.ipynb` | The same notebook adapted to a Kaggle GPU to make the submission | same pipeline |
 | `01_baseline_cnn_kaggle_tpu.ipynb` | The same notebook adapted to a Kaggle TPU (PyTorch/XLA on one TPU core) | same pipeline |
+| `01_baseline_cnn_large.ipynb` | The same pipeline with a larger CNN: five conv blocks instead of four, channels 32-64-128-256-512 instead of 32-64-128-192, dropout 0.2 before the linear layer, 4.8M parameters instead of 0.86M. The model class takes `widths`, `convs_per_block` and `dropout`, so its size changes without editing the class | not run yet |
+| `01_baseline_cnn_large_kaggle_gpu.ipynb` | `01_baseline_cnn_large.ipynb` adapted to a Kaggle GPU | same pipeline |
+| `01_baseline_cnn_large_kaggle_tpu.ipynb` | `01_baseline_cnn_large.ipynb` adapted to a Kaggle TPU | same pipeline |
 
 Balanced class weights in the loss were also tried with the baseline and lowered validation macro F1 from 0.64 to
 0.42, so the final run uses an unweighted loss.
+
+On Kaggle the baseline scored 0.649 macro F1 on the public leaderboard. A run with most of the augmentation removed
+scored 0.668 (validation macro F1 0.687 instead of 0.648): the small model underfits even the augmented training set
+(train macro F1 0.74), so heavier augmentation only makes it worse. The larger model is the next step to check this.
 
 Validation scores are reported for the best epoch, so they are slightly optimistic.
 
@@ -30,8 +37,8 @@ kaggle competitions download -c tpu-getting-started -p data
 `01_baseline_cnn.ipynb` unzips `data/tpu-getting-started.zip` into `data/tpu-getting-started/`, converts the 224x224
 TFRecords into `data/flowers-224/` and writes `submission.csv` next to the notebook. None of these are tracked by git.
 
-On Kaggle: create a notebook from `01_baseline_cnn_kaggle_gpu.ipynb`, add the competition data, choose a GPU
+On Kaggle: create a notebook from `01_baseline_cnn_kaggle_gpu.ipynb` (or `01_baseline_cnn_large_kaggle_gpu.ipynb`), add the competition data, choose a GPU
 accelerator (T4 x2 or P100) and turn the internet on (the notebook installs `tfrecord`). The internet toggle needs a
-phone-verified Kaggle account. `01_baseline_cnn_kaggle_tpu.ipynb` works the same way with a TPU accelerator, but TPU
-sessions often wait in a long queue. It reads the data from `/kaggle/input` and
+phone-verified Kaggle account. The `_kaggle_tpu` notebooks work the same way with a TPU accelerator, but TPU
+sessions often wait in a long queue. Every Kaggle notebook reads the data from `/kaggle/input` and
 writes `/kaggle/working/submission.csv`.
