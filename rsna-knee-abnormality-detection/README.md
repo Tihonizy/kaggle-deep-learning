@@ -84,7 +84,10 @@ through the same `Dataset` class and writes `submission.csv` as a rank average o
 | 4. Train | `02_report_labels_mil.ipynb`, weights go to `outputs/weights` | Mac, Apple MPS |
 | 5. Upload `outputs/weights` as a dataset and submit | `04_kaggle_submission.ipynb` | Kaggle, GPU |
 
-Results will be added after the full Kaggle run.
+## Result
+
+The project is finished. The final submission made with `04_kaggle_submission.ipynb` scored 0.69126 macro
+ROC AUC on the public leaderboard.
 
 ## Credits
 
