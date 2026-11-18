@@ -25,7 +25,8 @@
 │   └── README.md
 ├── petals-to-the-metal/
 │   ├── 01_baseline_cnn.ipynb
-│   ├── 01_baseline_cnn_large.ipynb
+│   ├── 02_baseline_cnn_large.ipynb
+│   ├── 03_cnn_ensemble_tta.ipynb
 │   └── README.md
 ├── rsna-knee-abnormality-detection/
 │   ├── 01_baseline_dinov2.ipynb

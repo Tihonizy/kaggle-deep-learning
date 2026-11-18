@@ -11,7 +11,8 @@ macro F1.
 | Notebook | What it adds |
 |---|---|
 | `01_baseline_cnn.ipynb` | TFRecords converted to `.jpg` files and a `.csv` with labels, lazy `Dataset`, light augmentation (random resized crop, flip, rotation, color jitter), custom CNN from scratch (four conv blocks with BatchNorm and SiLU, global average pooling, 0.86M parameters), AdamW with cosine schedule, 50 epochs, best epoch by validation macro F1 |
-| `01_baseline_cnn_large.ipynb` | The same pipeline with a larger CNN: five conv blocks instead of four, channels 32-64-128-256-512 instead of 32-64-128-192, dropout 0.2 before the linear layer, 4.8M parameters instead of 0.86M. The model class takes `widths`, `convs_per_block` and `dropout`, so its size changes without editing the class |
+| `02_baseline_cnn_large.ipynb` | The same pipeline with a larger CNN: five conv blocks instead of four, channels 32-64-128-256-512 instead of 32-64-128-192, dropout 0.2 before the linear layer, 4.8M parameters instead of 0.86M. The model class takes `widths`, `convs_per_block` and `dropout`, so its size changes without editing the class |
+| `03_cnn_ensemble_tta.ipynb` | Work in progress. Planned: ensemble of fine-tuned timm models and the custom CNN, test-time augmentation, 331x331 images, stratified K-fold on train and validation combined, mixed precision |
 
 ## Result
 

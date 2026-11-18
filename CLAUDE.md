@@ -40,8 +40,7 @@ To execute a notebook headlessly: `jupyter nbconvert --to notebook --execute --i
   shared across notebooks via modules. Exception: RSNA uses `%%writefile knee_dataset.py` (git-ignored) so
   DataLoader workers can import the dataset.
 - Markdown cells explain each step and what was tried/failed; update the project `README.md` notebook table and
-  the root README result/layout when adding or renaming notebooks (the root README layout currently lags the
-  petals renames: `02_baseline_cnn_large`, `03_cnn_ensemble_tta`).
+  the root README result/layout (both `README.md` and `README.ru.md`) when adding or renaming notebooks.
 
 ## Project specifics
 
